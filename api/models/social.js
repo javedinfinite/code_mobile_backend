@@ -5,11 +5,43 @@ const DbConnection = require("./dbConnection")
 get_all_users = async() => {
     try{
         const client = await DbConnection.get_db_connection()
-        const sql_text = 'SELECT * FROM public.relationship';
+        const sql_text = 'SELECT * FROM public.socialtable';
         const res = await client.query(sql_text);
         client.release()
         // console.log(res.rows)
         return res.rows
+            
+    } catch (err){
+            client.release()
+            console.log(err)
+        }
+}
+
+get_users_by_page_num = async(pageNumber) => {
+    try{
+        const client = await DbConnection.get_db_connection()
+        const pageSize = 10
+        offset = (pageNumber - 1)*pageSize
+        const sql_text = 'select * from public.socialtable order by id offset $1 rows fetch next $2 rows only';
+        const res = await client.query(sql_text,[offset,pageSize]);
+        client.release()
+        // console.log(res.rows)
+        return res.rows
+            
+    } catch (err){
+            client.release()
+            console.log(err)
+        }
+}
+
+get_page_count = async(pageNumber) => {
+    try{
+        const client = await DbConnection.get_db_connection()
+        const sql_text = 'select COUNT(*) from public.socialtable';
+        const res = await client.query(sql_text);
+        client.release()
+        // console.log(res.rows[0].count)
+        return res.rows[0].count
             
     } catch (err){
             client.release()
@@ -93,5 +125,7 @@ get_friends_of_friends = async(id) => {
 module.exports = {
         get_all_users:get_all_users,
         get_all_friends:get_all_friends,
-        get_friends_of_friends:get_friends_of_friends
+        get_friends_of_friends:get_friends_of_friends,
+        get_users_by_page_num:get_users_by_page_num,
+        get_page_count:get_page_count
 }

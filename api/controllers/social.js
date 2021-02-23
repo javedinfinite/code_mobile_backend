@@ -13,6 +13,32 @@ exports.get_all_users =  (req, res, next) => {
       }).catch(e => console.log(e));
 };
 
+exports.get_users_by_page_num =  (req, res, next) => {
+
+  socialModel.get_users_by_page_num(req.params.pageNum).then((data) => {
+      // console.log("from controller",data)
+        const response = {
+          message : "Handling get requests to /someusers. some users list is provided to you as following",
+          users : data
+        };
+        res.status(200).json(response);
+
+      }).catch(e => console.log(e));
+};
+
+exports.get_page_count =  (req, res, next) => {
+
+  socialModel.get_page_count().then((data) => {
+      // console.log("from controller",data)
+        const response = {
+          message : "Handling get requests to /users/pagecount. some users list is provided to you as following",
+          count : data
+        };
+        res.status(200).json(response);
+
+      }).catch(e => console.log(e));
+};
+
 exports.get_all_friends = (req, res, next) => {
  
   socialModel.get_all_friends(req.params.userId).then((data) => {

@@ -10,6 +10,10 @@ router.get("/",(req, res, next) => {
 
 router.get("/users", authenticate, SocialController.get_all_users);
 
+router.get("/someusers/:pageNum",authenticate, SocialController.get_users_by_page_num);
+
+router.get("/users/pagecount",authenticate, SocialController.get_page_count);
+
 router.get("/users/:userId",authenticate, SocialController.get_user);
 
 router.get("/friends/:userId", authenticate, SocialController.get_all_friends);
