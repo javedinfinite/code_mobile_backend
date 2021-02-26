@@ -18,8 +18,9 @@ pool.on('error', (err, client) => {
 get_db_connection = async () => {
     try{
         const client = await pool.connect();
+
         console.log("DB connection successfully established...")
-        // console.log("DB connected with user:", client.user)
+        console.log("DB connected with user:", client.user)
         return client
 
     } catch (err){
